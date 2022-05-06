@@ -1,18 +1,22 @@
+let humanScore = 0;
+let robotScore = 0;
+
+document.getElementById("rock").addEventListener('click', function() {playRound('rock')}); 
+document.getElementById("scissors").addEventListener('click', function() {playRound('scissors')}); 
+document.getElementById("paper").addEventListener('click', function() {playRound('paper')}); 
+
+function playRound(playerChoice) {
+    compChoice = computerPlay();
+    winner = compareChoices(compChoice, playerChoice);
+    printWinner(winner, compChoice, playerChoice);
+    tallyScore(winner);
+}
+
 function computerPlay() {
     const choices = ["rock", "paper", "scissors"];
     let randNum = Math.floor(Math.random()*3);
 
     return choices[randNum];
-}
-
-function playerSelection() {
-    let playerChoice = '';
-    
-    while(!['rock', 'paper', 'scissors'].includes(playerChoice)) {
-        playerChoice = prompt("Choose Rock, Paper or Scissors").toLowerCase();
-    };
-
-    return playerChoice; 
 }
 
 function compareChoices(computer, player) {
@@ -52,47 +56,42 @@ function compareChoices(computer, player) {
     }
 }
 
-function playRound() {
-    compChoice = computerPlay();
-    playerChoice = playerSelection();
-    winner = compareChoices(compChoice, playerChoice);
+function printWinner(results, playerChoice, compChoice) {
 
-    return winner;
+    switch(results) {
+        case "player":
+            console.log(`${playerChoice[0].toUpperCase() + playerChoice.slice(1)} beats ${compChoice[0].toUpperCase() + compChoice.slice(1)}... You Win!`)
+            humanScore++;
+            break;
+        case "computer":
+            console.log(`${compChoice[0].toUpperCase() + compChoice.slice(1)} beats ${playerChoice[0].toUpperCase() + playerChoice.slice(1)}... You Lose!`)
+            robotScore++;
+            break;
+        case "tie":
+            console.log(`You both chose ${compChoice[0].toUpperCase() + compChoice.slice(1)}... Tie Game!`)
+            break;
+    }
+    console.log(`Human: ${humanScore} ... Robot ${robotScore}`)
 }
 
-function game() {
-    let humanScore = 0;
-    let robotScore = 0;
-
-    for (let i = 0; i < 5; i++) {
-        results = playRound();
-        switch(results) {
-            case "player":
-                console.log(`${playerChoice[0].toUpperCase() + playerChoice.slice(1)} beats ${compChoice[0].toUpperCase() + compChoice.slice(1)}... You Win!`)
-                humanScore++;
-                break;
-            case "computer":
-                console.log(`${compChoice[0].toUpperCase() + compChoice.slice(1)} beats ${playerChoice[0].toUpperCase() + playerChoice.slice(1)}... You Lose!`)
-                robotScore++;
-                break;
-            case "tie":
-                console.log(`You both chose ${compChoice[0].toUpperCase() + compChoice.slice(1)}... Tie Game!`)
-                humanScore++;
-                robotScore++;
-                break;
-        }
-        console.log(`Human: ${humanScore} ... Robot ${robotScore}`)
-    }
+function tallyScore() {
     
-    if(humanScore > robotScore) {
-        console.log("You have prevented the robot uprising by winning this game!")
-    }
-    else if (robotScore > humanScore) {
-        console.log("The AI has surpassed humanity and the robot uprising shall begin")
-    }
-    else {
+    if(humanScore == 5 && robotScore == 5) {
         console.log("Due to a stalemate the fate of humanity shall be decided another day...")
+        resetScore();
+    }
+    else if (robotScore == 5) {
+        console.log("The AI has surpassed humanity and the robot uprising shall begin")
+        resetScore();
+    }
+    else if (humanScore == 5) {
+        console.log("You have prevented the robot uprising by winning this game!")
+        resetScore();
     }
 }
 
-game();
+function resetScore() {
+    humanScore = 0;
+    robotScore = 0;
+}
+
