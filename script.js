@@ -1,11 +1,12 @@
 let humanScore = 0;
 let robotScore = 0;
 
-document.getElementById("rock").addEventListener('click', function() {playRound('rock')}); 
-document.getElementById("scissors").addEventListener('click', function() {playRound('scissors')}); 
-document.getElementById("paper").addEventListener('click', function() {playRound('paper')}); 
+document.getElementById("Rock").addEventListener('click', function() {playRound('Rock')}); 
+document.getElementById("Scissors").addEventListener('click', function() {playRound('Scissors')}); 
+document.getElementById("Paper").addEventListener('click', function() {playRound('Paper')}); 
 
 function playRound(playerChoice) {
+    document.getElementById("outcome").innerText = "";
     compChoice = computerPlay();
     winner = compareChoices(compChoice, playerChoice);
     printWinner(winner, compChoice, playerChoice);
@@ -13,7 +14,7 @@ function playRound(playerChoice) {
 }
 
 function computerPlay() {
-    const choices = ["rock", "paper", "scissors"];
+    const choices = ["Rock", "Paper", "Scissors"];
     let randNum = Math.floor(Math.random()*3);
 
     return choices[randNum];
@@ -21,33 +22,33 @@ function computerPlay() {
 
 function compareChoices(computer, player) {
     switch(computer) {
-        case "rock":
-            if(player === "rock") {
+        case "Rock":
+            if(player === "Rock") {
                 return('tie');
             }
-            else if(player === "paper") {
+            else if(player === "Paper") {
                 return('player');
             }
             else {
                 return('computer');
             }
 
-        case "paper":
-            if(player === "rock") {
+        case "Paper":
+            if(player === "Rock") {
                 return('computer');
             }
-            else if(player === "paper") {
+            else if(player === "Paper") {
                 return('tie');
             }
             else {
                 return('player');
             }
 
-        case "scissors":
-            if(player === "rock") {
+        case "Scissors":
+            if(player === "Rock") {
                 return('player');
             }
-            else if(player === "paper") {
+            else if(player === "Paper") {
                 return('computer');
             }
             else {
@@ -60,32 +61,34 @@ function printWinner(results, playerChoice, compChoice) {
 
     switch(results) {
         case "player":
-            console.log(`${playerChoice[0].toUpperCase() + playerChoice.slice(1)} beats ${compChoice[0].toUpperCase() + compChoice.slice(1)}... You Win!`)
+            document.getElementById("messages").innerText = `${playerChoice} beats ${compChoice}... You Win!`;
             humanScore++;
             break;
         case "computer":
-            console.log(`${compChoice[0].toUpperCase() + compChoice.slice(1)} beats ${playerChoice[0].toUpperCase() + playerChoice.slice(1)}... You Lose!`)
+            document.getElementById("messages").innerText = `${compChoice} beats ${playerChoice}... You Lose!`;
             robotScore++;
             break;
         case "tie":
-            console.log(`You both chose ${compChoice[0].toUpperCase() + compChoice.slice(1)}... Tie Game!`)
+            document.getElementById("messages").innerText= `You both chose ${compChoice}... It's a tie!`;
             break;
     }
-    console.log(`Human: ${humanScore} ... Robot ${robotScore}`)
+    document.getElementById("humanScore").innerText = `Humans: ${humanScore}`;
+    document.getElementById("robotScore").innerText = `Robots: ${robotScore}`;
+    
 }
 
 function tallyScore() {
-    
+    outcome = document.getElementById("outcome");
     if(humanScore == 5 && robotScore == 5) {
-        console.log("Due to a stalemate the fate of humanity shall be decided another day...")
+       outcome.innerText = "Due to a stalemate the fate of humanity shall be decided another day..."
         resetScore();
     }
     else if (robotScore == 5) {
-        console.log("The AI has surpassed humanity and the robot uprising shall begin")
+        outcome.innerText = "The AI has surpassed humanity and the robot uprising shall begin"
         resetScore();
     }
     else if (humanScore == 5) {
-        console.log("You have prevented the robot uprising by winning this game!")
+        outcome.innerText = "You have prevented the robot uprising by winning this game!"
         resetScore();
     }
 }
